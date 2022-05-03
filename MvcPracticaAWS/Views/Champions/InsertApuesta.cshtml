@@ -1,0 +1,67 @@
+﻿@model List<Equipo>
+
+@{
+    ViewData["Title"] = "InsertApuesta";
+}
+
+<h1>InsertApuesta</h1>
+
+<h4>Apuesta</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="InsertApuesta">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+           
+                <input name="IdApuesta" type="hidden" value="0" class="form-control" />
+          
+            </div>
+            <div class="form-group">
+                <label class="control-label">Usuario</label>
+                <input name="Usuario" class="form-control" />
+           
+            </div>
+            <div class="form-group">
+                <label class="control-label">Local</label>
+                <select name="IdLocal">
+                    @foreach (Equipo eq in Model)
+                    {
+                        <option value="@eq.IdEquipo">@eq.Nombre</option>
+                    }
+
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Visitante</label>
+                <select name="IdVisitante">
+                    @foreach (Equipo eq in Model)
+                    {
+                        <option value="@eq.IdEquipo">@eq.Nombre</option>
+                    }
+
+                </select>
+            </div>
+            <div class="form-group">
+                <label  class="control-label">GolesLocal</label>
+                <input name="GolesLocal" type="number" class="form-control" />
+            
+            </div>
+            <div class="form-group">
+                <label class="control-label">GolesVisitante</label>
+                <input name="GolesVisitante" type="number" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
