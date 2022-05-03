@@ -1,3 +1,4 @@
+using Amazon.S3;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MvcPracticaAWS.Data;
 using MvcPracticaAWS.Repositories;
+using MvcPracticaAWS.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +31,9 @@ namespace MvcPracticaAWS
             string cadena = this.Configuration.GetConnectionString("cadenaawsmysql");
 
             services.AddTransient<RepositoryChampions>();
+            services.AddAWSService<IAmazonS3>();
+            services.AddTransient<ServiceAwsS3>();
+
             services.AddDbContext<ChampionsContext>
                 (options => options.UseMySql(cadena, ServerVersion.AutoDetect(cadena)));
 

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using MvcPracticaAWS.Models;
 using MvcPracticaAWS.Repositories;
+using MvcPracticaAWS.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +13,11 @@ namespace MvcPracticaAWS.Controllers
     public class ChampionsController : Controller
     {
         private RepositoryChampions repo;
-
-        public ChampionsController(RepositoryChampions repo)
+        private ServiceAwsS3 service;
+        public ChampionsController(RepositoryChampions repo, ServiceAwsS3 service)
         {
             this.repo = repo;
+            this.service = service;
         }
 
 
@@ -42,7 +45,7 @@ namespace MvcPracticaAWS.Controllers
             return View(equipos);
         }
         [HttpPost]
-        public IActionResult InsertJugador(Jugador jug)
+        public IActionResult InsertJugador(Jugador jug, IFormFile file)
         {
             int idjug = this.repo.GetMaxIdJugador();
             jug.IdJugador = idjug;
