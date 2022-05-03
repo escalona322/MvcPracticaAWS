@@ -5,6 +5,7 @@ using MvcPracticaAWS.Repositories;
 using MvcPracticaAWS.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -45,11 +46,17 @@ namespace MvcPracticaAWS.Controllers
             return View(equipos);
         }
         [HttpPost]
-        public IActionResult InsertJugador(Jugador jug, IFormFile file)
+        public async Task<IActionResult> InsertJugadorAsync(Jugador jug, IFormFile Imagen)
         {
             int idjug = this.repo.GetMaxIdJugador();
             jug.IdJugador = idjug;
+            jug.Imagen = Imagen.FileName;
+            using (Stream stream = Imagen.OpenReadStream())
+            {
+                await this.service.UploadFileAsync(stream, Imagen.FileName);
+            }
             this.repo.InsertJugador(jug);
+
             return RedirectToAction("Jugadores");
         }
 
